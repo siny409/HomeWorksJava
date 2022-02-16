@@ -8,48 +8,36 @@ class HomeWorkApp {
         compareNumbers();
     }
 
-    public static void printThreeWords() {
+    static void printThreeWords() {
         System.out.println("Orange");
         System.out.println("Banana");
         System.out.println("Apple");
     }
 
-    public static void checkSumSign() {
-        int a;
-        int b;
-        a = 10;
-        b = 5;
-        if (a + b >= 0) {
-            System.out.println("Сумма положительная");
-        }
-        if (a + b <= 0) {
-            System.out.println("Сумма отрицательная");
+    static void checkSumSign() {
+        int a = 10, b =5;
+        {
+            System.out.println(a + b >= 0? "Сумма положительная" : "Сумма отрицательная");
         }
     }
 
-    public static void printColor() {
-        int value;
-        value = 20;
-        if (value < 0) {
+    static void printColor() {
+        int value = 101;
+        if (value <= 0) {
             System.out.println("Red");
         }
-        if (value >= 20) {
+        if (value > 0 && value <= 100) {
             System.out.println("Yellow");
         }
-        if (value > 100) {
+        else {
             System.out.println("Green");
         }
     }
 
-    public static void compareNumbers() {
-        int a;
-        int b;
-        a = 40;
-        b = 15;
-        if (a >= b) {
-            System.out.println("a >= b");
-        } else {
-            System.out.println("a > b");
+    static void compareNumbers() {
+        int a =40, b = 15;
+        {
+            System.out.println(a >= b? "a >= b" : "a > b");
         }
     }
 }
