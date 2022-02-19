@@ -1,5 +1,12 @@
 package lesson2;
 
+/**
+ * Java 1. HomeWork 2
+  *
+  * @author Stanislav Sinelnikov
+  * @version 17.2.2022
+  */
+
 class HomeWorkApp2 {
 
     public static void main(String[] args) {
