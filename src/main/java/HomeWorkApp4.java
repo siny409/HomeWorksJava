@@ -4,129 +4,130 @@ package lesson4;
  * Java 1. HomeWork 4
  *
  * @author Stanislav Sinelnikov
- * @version 3.3.2022
+ * @version 10.3.2022
  */
 
 import java.util.Random;
 import java.util.Scanner;
-public class HomeWorkApp4 {
-    public static int SIZE = 3;
-    public static int DOTS_TO_WIN = 3;
-    public static final char DOT_EMPTY = '•';
-    public static final char DOT_X = 'X';
-    public static final char DOT_O = 'O';
-    public static char[][] map;
-    public static Scanner sc = new Scanner(System.in);
-    public static Random rand = new Random();
-    public static void main(String[] args) {
-        initMap();
-        printMap();
-        while (true) {
-            humanTurn();
-            printMap();
-            if (checkWin(DOT_X)) {
-                System.out.println("Победил человек");
-                break;
-            }
-            if (isMapFull()) {
-                System.out.println("Ничья");
-                break;
-            }
-            aiTurn();
-            printMap();
-            if (checkWin(DOT_O)) {
-                System.out.println("Победил Искуственный Интеллект");
-                break;
-            }
-            if (isMapFull()) {
-                System.out.println("Ничья");
-                break;
-            }
-        }
-        System.out.println("Игра закончена");
-    }
-    public static boolean checkWin(char symb) {
-        int X;
-        int y;
-        char dot;
-        for (X = 0; X < 2; X++) {
-            for (y = 0; y < 2; y++) {
-                if (map[y][0 + X] == dot && map[y][1 + X] == dot) {
-                    return true;
-                }
-            }
-        }
-        for (X = 0; X < 2; X++) {
-            for (y = 0; y < 2; y++) {
-                if (map[0 + X][y] == dot && map[1 + X][y] == dot) {
-                    return true;
-                }
-            }
-        }
-        for (X = 0; X < 2; X++) {
-            for (y = 0; y < 2; y++) {
-                if (map[0 + X][0 + y] == dot && map[1 + X][1 + y] == dot) {
-                    return true;
-                }
 
-                if (map[1 - X][0 + y] == dot && map[0 - X][1 + y] == dot) {
-                    return true;
-                }
+class HomeWorkApp4 {
+
+    Random random;
+    Scanner scanner;
+    char[][] table;
+
+    public static void main(String[] args) {
+        new HomeWorkApp4().game();
+    }
+
+    HomeWorkApp4() {
+        random = new Random();
+        scanner = new Scanner(System.in);
+        table = new char[3][3];
+    }
+
+    void game() {
+        initTable();
+        printTable();
+        while (true) {
+            turnHuman();
+            if (checkWin('x')) {
+                System.out.println("YOU WON!");
+                break;
+            }
+            if (isTableFull()) {
+                System.out.println("Sorry, DRAW...");
+                break;
+            }
+            turnAI();
+            printTable();
+            if (checkWin('o')) {
+                System.out.println("AI WON!");
+                break;
+            }
+            if (isTableFull()) {
+                System.out.println("Sorry, DRAW...");
+                break;
             }
         }
-        return false;
+        System.out.println("GAME OVER!");
+        printTable();
     }
-    public static boolean isMapFull() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_EMPTY) return false;
-            }
-        }
-        return true;
-    }
-    public static void aiTurn() {
-        int x, y;
-        do {
-            x = rand.nextInt(SIZE);
-            y = rand.nextInt(SIZE);
-        } while (!isCellValid(x, y));
-        System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
-        map[y][x] = DOT_O;
-    }
-    public static void humanTurn() {
-        int x, y;
-        do {
-            System.out.println("Введите координаты в формате X Y");
-            x = sc.nextInt() - 1;
-            y = sc.nextInt() - 1;
-        } while (!isCellValid(x, y)); // while(isCellValid(x, y) == false)
-        map[y][x] = DOT_X;
-    }
-    public static boolean isCellValid(int x, int y) {
-        if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
-        if (map[y][x] == DOT_EMPTY) return true;
-        else return false;
-    }
-    public static void initMap() {
-        map = new char[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                map[i][j] = DOT_EMPTY;
+
+    void initTable() {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                table[x][y] = '.';
             }
         }
     }
-    public static void printMap() {
-        for (int i = 0; i <= SIZE; i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        for (int i = 0; i < SIZE; i++) {
-            System.out.print((i + 1) + " ");
-            for (int j = 0; j < SIZE; j++) {
-                System.out.print(map[i][j] + " ");
+
+    void printTable() {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                //table [x][y] = '.';
+                System.out.print(table[x][y] + " ");
             }
             System.out.println();
         }
-        System.out.println();
+    }
+
+    void turnHuman() {
+        int x, y;
+        do {
+            System.out.print("Enter x y [1..3]: ");
+            x = scanner.nextInt() - 1;
+            y = scanner.nextInt() - 1;
+        } while (!isCellValid(x, y));
+        table[x][y] = 'x';
+    }
+    void turnAI() {
+        int x, y;
+        do {
+            x = random.nextInt(3);
+            y = random.nextInt(3);
+        } while (!isCellValid(x, y));
+        table[x][y] = 'o';
+    }
+
+    boolean isCellValid(int x, int y) {
+        if (x < 0 || y < 0 || x > 2 || y > 2) {
+            return false;
+        }
+        return table[x][y] == '.';
+    }
+
+    boolean checkWin(char ch) {
+
+        for (int i = 0; i < 3; i++)
+            if ((table[i][0] == ch && table[i][1] == ch && table[i][2] == ch) ||
+                    (table[0][i] == ch && table[1][i] == ch && table[2][i] == ch))
+                return true;
+        if ((table[0][0] == ch && table[1][1] == ch && table[2][2] == ch) ||
+                (table[2][0] == ch && table[1][1] == ch && table[0][2] == ch))
+            return true;
+        return false;
+    }
+        /*if (table[0][0] == ch && table[0][1] == ch && table[0][2] == ch) return true;
+        if (table[1][0] == ch && table[1][1] == ch && table[1][2] == ch) return true;
+        if (table[2][0] == ch && table[2][1] == ch && table[2][2] == ch) return true;
+
+        if (table[0][0] == ch && table[1][0] == ch && table[2][0] == ch) return true;
+        if (table[0][1] == ch && table[1][1] == ch && table[2][1] == ch) return true;
+        if (table[0][2] == ch && table[1][2] == ch && table[2][2] == ch) return true;
+
+        if (table[0][0] == ch && table[1][1] == ch && table[2][2] == ch) return true;
+        if (table[2][0] == ch && table[1][1] == ch && table[0][2] == ch) return true;
+        return false;*/
+
+    boolean isTableFull() {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (table[x][y] == '.') {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
